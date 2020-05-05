@@ -1,0 +1,52 @@
+version: '2'
+services:
+
+  nginx_proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports: 
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - nginx_server
+
+  nginx_server:
+    build: 
+      context: .
+      dockerfile: nginx/Dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./www/curso:/var/www/curso
+    environment:
+      - VIRTUAL_HOST=laravel-desdecero.io
+    links:
+      - php_app
+    depends_on:
+      - php_app
+
+  php_app:
+    build: 
+      context: .
+      dockerfile: php/Dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./www/curso:/var/www/curso
+    database:
+      - php_app
+      
+  database:
+    image: mysql:5.6
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=mi_database
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+        - "3306:3306"
+
+volumes:
+  dbdata:
+
