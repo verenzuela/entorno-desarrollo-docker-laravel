@@ -14,7 +14,7 @@
 - Crear un proyecto laravel dentro de www llamado curso, su usted crea el proyecto con un nombre diferente debe reemplazar el nombre de la carpteta en los archivos vhost.conf y docker-compose.yaml
 
 > Ejecutar contenedor
-- en el terminal navege hasta la carpeta de entorno-desarrollo-docker-laravel y ejecute
+> en el terminal navege hasta la carpeta de entorno-desarrollo-docker-laravel y ejecute
 
 ```shell
 $ docker-compose up
@@ -32,3 +32,12 @@ $ docker-compose up -d
 ```shell
 $ docker-compose down
 ```
+
+
+### Crear proyecto laravel con docker
+> Para crear un proyecto laravel, navegue hasta la carpeta www y ejecute
+
+```shell
+$ docker run --rm -v $(pwd):/app --user $(id -u):$(id -g) composer create-project --prefer-dist laravel/laravel curso
+```
+
